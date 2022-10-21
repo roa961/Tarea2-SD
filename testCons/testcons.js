@@ -13,7 +13,7 @@ const consumer = kafka.consumer({ groupId: 'test-group' })
 consumer.run({
   eachMessage:  ({ topic, partition, message }) => {
     console.log({
-      value: message.value.toString(),
+      value: message.value.toString()
     })
   },
 })
