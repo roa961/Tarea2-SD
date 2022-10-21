@@ -15,19 +15,44 @@ exports.AgenteExt = async (req, res) => {
 exports.RegistrarCarrito = async (req, res) => {
     const { nombre, apellido, rut, correo, patente, premium } = req.body
     await producer.connect()
-    await producer.send({
-        topic: 'registrar',
-        messages: [
-            { value: JSON.stringify({
-                nombre: nombre,
-                apellido: apellido,
-                rut: rut,
-                correo: correo,
-                patente: patente,
-                premium: premium
-            })},
-        ],
-    })
+    if (premium) {
+        await producer.send({
+            topic: 'registrar',
+            messages: [
+                {
+                    value: JSON.stringify({
+                        nombre: nombre,
+                        apellido: apellido,
+                        rut: rut,
+                        correo: correo,
+                        patente: patente,
+                        premium: premium
+                    }),
+                    partition: 0
+                },
+
+            ]
+        })
+
+    }
+    else {
+        await producer.send({
+            topic: 'registrar',
+            messages: [
+                {
+                    value: JSON.stringify({
+                        nombre: nombre,
+                        apellido: apellido,
+                        rut: rut,
+                        correo: correo,
+                        patente: patente,
+                        premium: premium
+                    })
+                },
+            ],
+        })
+    }
+
     return res.status(201).json({
         nombre: nombre,
         apellido: apellido,
@@ -45,13 +70,15 @@ exports.RegistroVenta = async (req, res) => {
     await producer.send({
         topic: 'venta',
         messages: [
-            { value: JSON.stringify({
-                cliente: cliente,
-                n_sopaipillas: n_sopaipillas,
-                hora: hora,
-                stock_restante: stock_restante,
-                ubicacion: ubicacion,
-            })},
+            {
+                value: JSON.stringify({
+                    cliente: cliente,
+                    n_sopaipillas: n_sopaipillas,
+                    hora: hora,
+                    stock_restante: stock_restante,
+                    ubicacion: ubicacion,
+                })
+            },
         ],
     })
 
