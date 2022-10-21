@@ -4,7 +4,7 @@ const Routes = require('./routes/auth')
 
 app.use(express.json())
 app.use('/api', Routes)
-let port = 3002
+let port = 8005
 
 const appRun = () => {
     try {

@@ -1,7 +1,7 @@
 version: "3.9"
 
 networks:
-  my_network: tarea2
+  my_network:
 
 services:
   zookeeper:
@@ -31,25 +31,13 @@ services:
     depends_on:
       - zookeeper
 
-  producer:
-    container_name: producer
+  server:
+    container_name: server
     networks:
       - my_network
-    build: ./Producer
+    build: ./server
     ports:
-      - "8000:8000"
+      - "8005:8005"
     depends_on:
       - kafka
       - zookeeper
-  
-  consumer:
-    container_name: consumer
-    networks:
-      - my_network
-    build: ./Consumer
-    ports:
-      - "5000:5000"
-    depends_on:
-      - kafka
-      - zookeeper
-      - producer
