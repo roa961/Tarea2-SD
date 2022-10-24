@@ -6,24 +6,10 @@ const kafka = new Kafka({
 })
 const producer = kafka.producer()
 
-exports.Coord = async (req, res) => {
-    const { coord, patente } = req.body
-    await producer.connect()
-    await producer.send({
-        topic: 'coordenadas',
-        messages: [
-            {
-                value: JSON.stringify({
-                    coordenadas: coord,
-                    carrito: patente
-                })
-            },
-        ],
-    })
-    return res.status(201).json({
-        coordenadas: coord,
-        carrito: patente
-    })
+
+exports.AgenteExt = async (req, res) => {
+    const { coord } = req.body
+
 }
 
 exports.RegistrarCarrito = async (req, res) => {
@@ -79,7 +65,7 @@ exports.RegistrarCarrito = async (req, res) => {
 
 }
 exports.RegistroVenta = async (req, res) => {
-    const { patente, cliente, n_sopaipillas, hora, stock_restante, ubicacion } = req.body
+    const { cliente, n_sopaipillas, hora, stock_restante, ubicacion } = req.body
 
     await producer.connect()
     await producer.send({
@@ -87,7 +73,6 @@ exports.RegistroVenta = async (req, res) => {
         messages: [
             {
                 value: JSON.stringify({
-                    patente: patente,
                     cliente: cliente,
                     n_sopaipillas: n_sopaipillas,
                     hora: hora,
@@ -97,10 +82,8 @@ exports.RegistroVenta = async (req, res) => {
             },
         ],
     })
-    await producer.disconnect()
 
     return res.status(201).json({
-        patente: patente,
         cliente: cliente,
         n_sopaipillas: n_sopaipillas,
         hora: hora,
