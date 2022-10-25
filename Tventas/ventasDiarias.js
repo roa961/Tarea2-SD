@@ -7,7 +7,7 @@ const Diarias = async () => {
         clientId: 'my-app123',
         brokers: ['localhost:9092'], //cambiar a kafka cuando sea docker
     })
-    const consumer = kafka.consumer({ groupId: 'test-group9d222d221' })
+    const consumer = kafka.consumer({ groupId: 'test-gro2d221' })
 
     await consumer.connect()
     await consumer.subscribe({ topic: "ventas", fromBeginning: true })
