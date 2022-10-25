@@ -9,3 +9,7 @@ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-fac
 bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 2 --topic coordenadas
 bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 2 --topic stock
 bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 2 --topic registromiembros
+
+--- consumer ---
+
+bin/kafka-console-consumer.sh --topic ventas --from-beginning --bootstrap-server localhost:9092
