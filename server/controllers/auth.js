@@ -16,7 +16,8 @@ exports.Coord = async (req, res) => {
                 value: JSON.stringify({
                     coordenadas: coord,
                     carrito: patente
-                })
+                }),
+                partition: 1
             },
         ],
     })
@@ -107,4 +108,21 @@ exports.RegistroVenta = async (req, res) => {
         stock_restante: stock_restante,
         ubicacion: ubicacion,
     })
+}
+exports.profugo = async (req, res) => {
+    const { coord } = req.body
+    await producer.connect()
+    await producer.send({
+        topic: 'coordenadas',
+        messages: [
+            {
+                value: JSON.stringify({
+                    coord: coord,
+                }),
+                partition: 1
+            },
+
+        ]
+    })
+
 }
