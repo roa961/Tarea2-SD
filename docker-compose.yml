@@ -1,24 +1,37 @@
 version: "3.9"
 
-networks:
-  my_network:
-
 services:
+  postgres:
+    container_name: postgresSD
+    image: bitnami/postgresql:12.10.0
+    restart: always
+    ports:
+      - '5432'
+    environment:
+      - POSTGRESQL_USER=postgres
+      - POSTGRESQL_DATABASE=postgres
+      - ALLOW_EMPTY_PASSWORD=yes
+      - POSTGRESQL_PASSWORD=postgres
+    networks:
+      network:
+        ipv4_address: 10.5.0.10
+    volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     container_name: zookeeper
-    networks:
-      - my_network
     ports:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      network:
+        ipv4_address: 10.5.0.11
 
   kafka:
     image: 'bitnami/kafka:latest'
     container_name: kafka
-    networks:
-      - my_network
     ports:
       - '9092:9092'
     environment:
@@ -27,17 +40,40 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+    networks:
+      network:
+        ipv4_address: 10.5.0.12
 
     depends_on:
       - zookeeper
 
   server:
     container_name: server
-    networks:
-      - my_network
     build: ./server
     ports:
       - "8005:8005"
     depends_on:
       - kafka
       - zookeeper
+    networks:
+      network:
+        ipv4_address: 10.5.0.13
+  serverventas:
+    container_name: serverventas
+    build: ./Tventas
+    ports:
+      - "8012:8012"
+    networks:
+      network:
+        ipv4_address: 10.5.0.14
+    depends_on:
+      - kafka
+      - zookeeper
+      - server
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1

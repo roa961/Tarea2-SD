@@ -8,7 +8,7 @@ const kafka = new Kafka({
 const consumer = kafka.consumer({ groupId: 'test-group' })
 
  consumer.connect()
- consumer.subscribe({ topic: 'registrar', fromBeginning: true })
+ consumer.subscribe({ topic: 'stock', fromBeginning: true })
 
 consumer.run({
   eachMessage:  ({ topic, partition, message }) => {
