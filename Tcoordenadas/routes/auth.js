@@ -1,8 +1,9 @@
 const {Router} = require('express')
-const { Coords } = require('../controllers/auth')
 const router = Router()
+const { Coords } = require('../controllers/auth')
 
 
-router.post('/coordenadas', Coords)
+router.get('/coordenadas', Coords)
+
 
 module.exports =  router
