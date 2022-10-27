@@ -7,24 +7,45 @@ const kafka = new Kafka({
 const producer = kafka.producer()
 
 exports.Coord = async (req, res) => {
-    const { coord, patente } = req.body
+    const { coord, patente, time } = req.body
     await producer.connect()
-    await producer.send({
-        topic: 'coordenadas',
-        messages: [
-            {
-                value: JSON.stringify({
-                    coordenadas: coord,
-                    carrito: patente
-                }),
-                partition: 1
-            },
-        ],
-    })
-    return res.status(201).json({
-        coordenadas: coord,
-        carrito: patente
-    })
+    if (time < 60){
+        await producer.send({
+            topic: 'coordenadas',
+            messages: [
+                {
+                    value: JSON.stringify({
+                        coordenadas: coord,
+                        carrito: patente
+                    }),
+                    partition: 1
+                },
+            ],
+        })
+        return res.status(201).json({
+            coordenadas: coord,
+            carrito: patente
+        })
+    }else{
+        await producer.send({
+            topic: 'coordenadas',
+            messages: [
+                {
+                    value: JSON.stringify({
+                        coordenadas: coord,
+                        carrito: patente
+                    }),
+                    partition: 0
+                },
+            ],
+        })
+        return res.status(201).json({
+            coordenadas: coord,
+            carrito: patente,
+            estado : "profugo"
+        })
+    }
+    
 }
 
 exports.RegistrarCarrito = async (req, res) => {
@@ -108,21 +129,4 @@ exports.RegistroVenta = async (req, res) => {
         stock_restante: stock_restante,
         ubicacion: ubicacion,
     })
-}
-exports.profugo = async (req, res) => {
-    const { coord } = req.body
-    await producer.connect()
-    await producer.send({
-        topic: 'coordenadas',
-        messages: [
-            {
-                value: JSON.stringify({
-                    coord: coord,
-                }),
-                partition: 1
-            },
-
-        ]
-    })
-
 }

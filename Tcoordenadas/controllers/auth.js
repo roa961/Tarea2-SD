@@ -1,12 +1,18 @@
 const { Kafka } = require('kafkajs')
+const { coord } = require('../coords')
 
-const kafka = new Kafka({
-    clientId: 'my-app',
-    brokers: ['localhost:9092'], //cambiar a kafka cuando sea docker
-})
 
-exports.Coords = async (req, res) => {
-
+exports.coordenadas = async (req, res) => {
+    await coord()
+    try {
+        
+     
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+exports.diarios = async (req, res) => {
 
 
 }
