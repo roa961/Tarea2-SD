@@ -5,7 +5,7 @@ const kafka = new Kafka({
     brokers: ['kafka:9092'], //cambiar a kafka cuando sea docker
 })
 
-exports.Coords = async (req, res) => {
+exports.coord = async (req, res) => {
 
 
 
