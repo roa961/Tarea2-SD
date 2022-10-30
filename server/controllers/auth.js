@@ -1,7 +1,7 @@
 const { Kafka } = require('kafkajs')
 
 const kafka = new Kafka({
-    clientId: 'my-app',
+    clientId: 'my-app123',
     brokers: ['kafka:9092'], //cambiar a kafka cuando sea docker
 })
 const producer = kafka.producer()
@@ -132,20 +132,31 @@ exports.RegistroVenta = async (req, res) => {
         ubicacion: ubicacion,
     })
 }
-exports.profugo = async (req, res) => {
-    const { coord } = req.body
+exports.stock = async (req, res) => {
+    const { stock } = req.body;
+    const producer = kafka.producer();
     await producer.connect()
     await producer.send({
-        topic: 'coordenadas',
+        topic: 'stock',
         messages: [
             {
                 value: JSON.stringify({
-                    coord: coord,
-                }),
-                partition: 1
+                    patente: patente,
+                    cliente: cliente,
+                    n_sopaipillas: n_sopaipillas,
+                    
+                })
             },
-
-        ]
+        ],
     })
+    await producer.disconnect()
 
-}
+    return res.status(201).json({
+        patente: patente,
+        cliente: cliente,
+        n_sopaipillas: n_sopaipillas,
+        
+    })
+    
+    }
+

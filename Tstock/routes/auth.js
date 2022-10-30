@@ -1,12 +1,8 @@
 const {Router} = require('express')
-const { getTest, RegistrarCarrito, RegistroVenta, AgenteExt } = require('../controllers/auth')
+const { Stock } = require('../controllers/auth')
 const router = Router()
 
 
-router.post('/reporte', AgenteExt)
-
-router.post('/registrar', RegistrarCarrito)
-
-router.post('/venta', RegistroVenta)
+router.post('/stock', Stock)
 
 module.exports =  router

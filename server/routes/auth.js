@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const { Coord, RegistrarCarrito, RegistroVenta, profugo,  } = require('../controllers/auth')
+const { Coord, RegistrarCarrito, RegistroVenta, stock,  } = require('../controllers/auth')
 const router = Router()
 
 
@@ -9,6 +9,6 @@ router.post('/registrar', RegistrarCarrito)
 
 router.post('/venta', RegistroVenta)
 
-router.post('/profugo', profugo)
+router.post('/stock', stock)
 
 module.exports =  router

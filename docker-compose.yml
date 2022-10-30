@@ -66,3 +66,12 @@ services:
       - kafka
       - zookeeper
       - server
+  serverstock:
+    container_name: serverstock
+    build: ./Tstock
+    ports:
+      - "8011:8011"
+    depends_on:
+      - kafka
+      - zookeeper
+      - server
