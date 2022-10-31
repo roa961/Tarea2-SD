@@ -8,46 +8,47 @@ const producer = kafka.producer()
 
 exports.Coord = async (req, res) => {
     const producer = kafka.producer();
-      //const admin = kafka.admin();
-      await producer.connect();
-      const { id,coordenadas , denuncia } = req.body;
-      //var time = Math.floor(new Date() / 1000);
-      let ubication = {
+    //const admin = kafka.admin();
+    await producer.connect();
+    const { id, coordenadas, denuncia } = req.body;
+    //var time = Math.floor(new Date() / 1000);
+    let ubication = {
         id: id,
-        coordenadas:coordenadas,
-        denuncia:denuncia 
-      }
-      value = JSON.stringify(ubication)
-      if(ubication["denuncia"] == 1){
+        coordenadas: coordenadas,
+        denuncia: denuncia
+    }
+    value = JSON.stringify(ubication)
+    if (ubication["denuncia"] == 1) {
         console.log("Este carrito ha sido denunciado, es profugo")
 
-         const CarroProfugo = [{
+        const CarroProfugo = [{
             topic: 'ubication',
-            partition:1,
-            messages:[{value:JSON.stringify(ubication),partition: 1}]
-          },
+            partition: 1,
+            messages: [{ value: JSON.stringify(ubication), partition: 1 }]
+        },
         ]
-        await producer.sendBatch({CarroProfugo})
+        await producer.sendBatch({ CarroProfugo })
         console.log("Envie", ubication)
-      }
-      else{
+    }
+    else {
         console.log("Carrito Limpio.")
 
-         const CarroProfugo = [
-         {topic: 'ubication',
-          partition:0,
-          messages:[{value:JSON.stringify(ubication),partition: 0}]
-         },
-         {
-          topic: "ubication",
-          messages: [{value: JSON.stringify(ubication)}]
-         }
-       ]
-       await producer.sendBatch({CarroProfugo})
-       console.log("Envie", ubication)
-     }
-     await producer.disconnect();
-     res.json(ubication);
+        const CarroProfugo = [
+            {
+                topic: 'ubication',
+                partition: 0,
+                messages: [{ value: JSON.stringify(ubication), partition: 0 }]
+            },
+            {
+                topic: "ubication",
+                messages: [{ value: JSON.stringify(ubication) }]
+            }
+        ]
+        await producer.sendBatch({ CarroProfugo })
+        console.log("Envie", ubication)
+    }
+    await producer.disconnect();
+    res.json("ubication");
 }
 
 exports.RegistrarCarrito = async (req, res) => {
@@ -141,10 +142,8 @@ exports.stock = async (req, res) => {
         messages: [
             {
                 value: JSON.stringify({
-                    patente: patente,
-                    cliente: cliente,
-                    n_sopaipillas: n_sopaipillas,
-                    
+                    stock: stock
+
                 })
             },
         ],
@@ -152,11 +151,9 @@ exports.stock = async (req, res) => {
     await producer.disconnect()
 
     return res.status(201).json({
-        patente: patente,
-        cliente: cliente,
-        n_sopaipillas: n_sopaipillas,
-        
+        stock: stock
+
     })
-    
-    }
+
+}
 
