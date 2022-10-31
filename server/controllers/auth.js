@@ -8,45 +8,45 @@ const producer = kafka.producer()
 
 exports.Coord = async (req, res) => {
     const producer = kafka.producer();
-      await producer.connect();
-      const { id,coordenadas , denuncia } = req.body;
-      let ubication = {
+    await producer.connect();
+    const { id,coordenadas , denuncia } = req.body;
+    let ubicacion = {
         id: id,
         coordenadas: coordenadas,
-        denuncia: denuncia
+        denunciado: denunciado
     }
-    value = JSON.stringify(ubication)
-    if (ubication["denuncia"] == 1) {
-        console.log("Este carrito ha sido denunciado, es profugo")
+    value = JSON.stringify(ubicacion)
+    if (ubicacion["denunciado"] == 1) {
+        console.log("Carrito denunciado")
 
-        const CarroProfugo = [{
-            topic: 'ubication',
+        const prof = [{
+            topic: 'ubicacion',
             partition: 1,
-            messages: [{ value: JSON.stringify(ubication), partition: 1 }]
+            messages: [{ value: JSON.stringify(ubicacion), partition: 1 }]
         },
         ]
-        await producer.sendBatch({ CarroProfugo })
-        console.log("Envie", ubication)
+        await producer.sendBatch({ prof })
+        console.log("Envie", ubicacion)
     }
     else {
-        console.log("Carrito Limpio.")
+        console.log("Carrito no denunciado")
 
-        const CarroProfugo = [
+        const prof = [
             {
-                topic: 'ubication',
+                topic: 'ubicacion',
                 partition: 0,
-                messages: [{ value: JSON.stringify(ubication), partition: 0 }]
+                messages: [{ value: JSON.stringify(ubicacion), partition: 0 }]
             },
             {
-                topic: "ubication",
-                messages: [{ value: JSON.stringify(ubication) }]
+                topic: "ubicacion",
+                messages: [{ value: JSON.stringify(ubicacion) }]
             }
         ]
-        await producer.sendBatch({ CarroProfugo })
-        console.log("Envie", ubication)
+        await producer.sendBatch({ prof })
+        console.log(ubicacion)
     }
     await producer.disconnect();
-    res.json("ubication");
+    res.json("ubicacion");
 }
 
 exports.RegistrarCarrito = async (req, res) => {
