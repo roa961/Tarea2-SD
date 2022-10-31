@@ -12,7 +12,7 @@ const appRun = () => {
         app.listen(port, () => {
             console.log('Servidor coordenadas ejecutándose en el puerto ' + port)
         })
-        coord()
+        
     }
     catch(error){
         console.log(`Error: ${error.message}`)

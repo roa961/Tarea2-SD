@@ -8,10 +8,8 @@ const producer = kafka.producer()
 
 exports.Coord = async (req, res) => {
     const producer = kafka.producer();
-      //const admin = kafka.admin();
       await producer.connect();
       const { id,coordenadas , denuncia } = req.body;
-      //var time = Math.floor(new Date() / 1000);
       let ubication = {
         id: id,
         coordenadas:coordenadas,
@@ -133,7 +131,7 @@ exports.RegistroVenta = async (req, res) => {
     })
 }
 exports.stock = async (req, res) => {
-    const { stock } = req.body;
+    const { patente,cliente,n_sopaipillas } = req.body;
     const producer = kafka.producer();
     await producer.connect()
     await producer.send({
