@@ -27,9 +27,8 @@ const Stock  = async() =>{
             
           })
         }
-    
-      },
-    
-  })
-}
+      }
+    })
+  }
+
 module.exports = { Stock }
