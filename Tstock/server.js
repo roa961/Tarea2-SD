@@ -10,7 +10,9 @@ const appRun = () => {
     try {
         app.listen(port, () => {
             console.log('Servidor stock ejecutándose en el puerto ' + port)
+            stock()
         })
+        
     }
     catch(error){
         console.log(`Error: ${error.message}`)
